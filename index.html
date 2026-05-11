@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PawTreats 毛爪子｜天然手工寵物零食</title>
+  <meta name="description" content="PawTreats 毛爪子 — 每一次零食，都是愛。天然手工寵物零食，給把毛小孩當家人的鏟屎官。">
+  <style>
+    :root {
+      --warm-orange: #E67E22;
+      --cream: #FDF6E3;
+      --forest: #27AE60;
+      --text: #2c2416;
+      --text-soft: rgba(44, 36, 22, 0.85);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .skip-link {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .skip-link:focus {
+      position: fixed;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 100;
+      width: auto;
+      height: auto;
+      margin: 0;
+      padding: 0.65rem 1rem;
+      clip: auto;
+      overflow: visible;
+      white-space: normal;
+      background: var(--text);
+      color: var(--cream);
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 0.35rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Noto Sans TC",
+        "Microsoft JhengHei", sans-serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--text);
+      background-color: var(--cream);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    a {
+      color: var(--forest);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    a:hover {
+      color: var(--warm-orange);
+    }
+
+    /* Header nav */
+    .site-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 1rem 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(
+        to bottom,
+        rgba(44, 36, 22, 0.45),
+        transparent
+      );
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      color: var(--cream);
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+      letter-spacing: 0.02em;
+    }
+
+    .logo span {
+      font-weight: 500;
+      opacity: 0.95;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 85vh;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero__media {
+      position: absolute;
+      inset: 0;
+      background: #8b6914 url("hero-puppy.png") center / cover no-repeat;
+    }
+
+    .hero__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        165deg,
+        rgba(230, 126, 34, 0.15) 0%,
+        rgba(44, 36, 22, 0.35) 45%,
+        rgba(39, 174, 96, 0.2) 100%
+      );
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 56rem;
+      padding: clamp(2rem, 6vw, 4rem);
+      padding-bottom: clamp(2.5rem, 7vw, 4.5rem);
+      text-align: center;
+    }
+
+    .hero__tagline {
+      margin: 0;
+      font-size: clamp(1.65rem, 6vw, 2.85rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--cream);
+      text-shadow:
+        0 2px 24px rgba(0, 0, 0, 0.4),
+        0 1px 0 rgba(230, 126, 34, 0.25);
+      letter-spacing: 0.04em;
+    }
+
+    .hero__sub {
+      margin: 1rem auto 0;
+      max-width: 26em;
+      font-size: clamp(0.95rem, 2.6vw, 1.125rem);
+      color: rgba(253, 246, 227, 0.95);
+      font-weight: 500;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Decorative section framing */
+    .section {
+      padding: clamp(3rem, 8vw, 5.5rem) 5vw;
+    }
+
+    .section__inner {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      margin: 0 0 1.75rem;
+      font-size: clamp(1.5rem, 3.8vw, 2rem);
+      font-weight: 700;
+      color: var(--warm-orange);
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+
+    /* Brand story */
+    .story {
+      position: relative;
+      background: var(--cream);
+    }
+
+    .story__panel {
+      position: relative;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      box-shadow:
+        0 4px 24px rgba(44, 36, 22, 0.12),
+        0 0 0 1px rgba(230, 126, 34, 0.12);
+    }
+
+    .story__bg {
+      min-height: clamp(22rem, 55vw, 32rem);
+      background: url("kitchen.png") center / cover no-repeat;
+    }
+
+    .story__scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        rgba(253, 246, 227, 0.94) 0%,
+        rgba(253, 246, 227, 0.88) 38%,
+        rgba(253, 246, 227, 0.35) 70%,
+        transparent 100%
+      );
+    }
+
+    .story__text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(1.75rem, 5vw, 3rem);
+      max-width: min(36rem, 92%);
+    }
+
+    .story__text h3 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(1.35rem, 3.5vw, 1.85rem);
+      color: var(--forest);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .story__text p {
+      margin: 0 0 1rem;
+      color: var(--text-soft);
+      font-size: clamp(0.95rem, 2.5vw, 1.0625rem);
+    }
+
+    .story__text p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Products */
+    .products {
+      background: linear-gradient(
+        180deg,
+        var(--cream) 0%,
+        rgba(230, 126, 34, 0.08) 50%,
+        var(--cream) 100%
+      );
+    }
+
+    .product-grid {
+      display: grid;
+      gap: clamp(1.25rem, 3vw, 1.75rem);
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 640px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 980px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .product-card {
+      background: rgba(253, 246, 227, 0.98);
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid rgba(39, 174, 96, 0.2);
+      box-shadow:
+        0 2px 12px rgba(44, 36, 22, 0.08),
+        0 8px 32px rgba(230, 126, 34, 0.06);
+      transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+      will-change: transform;
+    }
+
+    .product-card:hover,
+    .product-card:focus-within {
+      transform: translateY(-8px);
+      box-shadow:
+        0 8px 28px rgba(44, 36, 22, 0.12),
+        0 16px 48px rgba(230, 126, 34, 0.12);
+    }
+
+    .product-card__img-wrap {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(160deg, #f4ead4, #e8dcc4);
+      overflow: hidden;
+    }
+
+    .product-card__corner {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.35rem;
+      pointer-events: none;
+    }
+
+    .product-card__celebration {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 1px 2px rgba(44, 36, 22, 0.2));
+    }
+
+    .product-card__badge {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      line-height: 1.25;
+      color: #fff;
+      border-radius: 4px;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 3px rgba(44, 36, 22, 0.15);
+    }
+
+    .product-card__badge--celebration {
+      background: #d63384;
+    }
+
+    .product-card__badge--dehydrate {
+      background: #1e8449;
+    }
+
+    .product-card__badge--training {
+      background: #ca6f1e;
+    }
+
+    .product-card__img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-card__body {
+      padding: 1.25rem 1.35rem 1.5rem;
+    }
+
+    .product-card__body h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--warm-orange);
+      letter-spacing: 0.03em;
+    }
+
+    .product-card__body p {
+      margin: 0;
+      font-size: 0.9375rem;
+      color: var(--text-soft);
+    }
+
+    .product-card__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.1rem;
+      padding: 0.55rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--cream);
+      background: var(--warm-orange);
+      border: none;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 2px 10px rgba(230, 126, 34, 0.35);
+      transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease;
+    }
+
+    .product-card__cta:hover {
+      background: #d35400;
+      color: var(--cream);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(230, 126, 34, 0.45);
+    }
+
+    .product-card__cta:focus-visible {
+      outline: 2px solid var(--forest);
+      outline-offset: 3px;
+    }
+
+    /* Contact */
+    .contact {
+      background: var(--cream);
+    }
+
+    .contact__grid {
+      display: grid;
+      gap: clamp(1rem, 2.5vw, 1.35rem);
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 640px) {
+      .contact__grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .contact__card {
+      padding: 1.35rem 1.4rem 1.45rem;
+      background: rgba(253, 246, 227, 0.95);
+      border-radius: 1rem;
+      border: 1px solid rgba(230, 126, 34, 0.22);
+      box-shadow: 0 2px 14px rgba(44, 36, 22, 0.06);
+    }
+
+    .contact__card h3 {
+      margin: 0 0 0.65rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--forest);
+      letter-spacing: 0.05em;
+    }
+
+    .contact__card p {
+      margin: 0;
+      font-size: 0.9375rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+
+    .contact__card a {
+      font-weight: 600;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: linear-gradient(
+        170deg,
+        rgba(39, 174, 96, 0.12) 0%,
+        rgba(230, 126, 34, 0.1) 100%
+      );
+      border-top: 1px solid rgba(230, 126, 34, 0.2);
+      padding: clamp(2.5rem, 6vw, 3.5rem) 5vw;
+    }
+
+    .footer__inner {
+      max-width: 56rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer__nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.25rem;
+      justify-content: center;
+      margin: 0 0 1.5rem;
+      padding: 0;
+      list-style: none;
+    }
+
+    .footer__nav a {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .footer__nav a:hover {
+      color: var(--warm-orange);
+      border-bottom-color: rgba(230, 126, 34, 0.5);
+    }
+
+    .footer__meta {
+      margin: 0 0 1.25rem;
+      font-size: 0.875rem;
+      color: rgba(44, 36, 22, 0.65);
+      line-height: 1.65;
+    }
+
+    .footer__brand {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--forest);
+      margin-bottom: 0.25rem;
+    }
+
+    .footer__tagline {
+      margin: 0 0 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-soft);
+    }
+
+    .footer__contact {
+      margin: 0 0 1.25rem;
+      font-size: 0.9375rem;
+      color: var(--text);
+    }
+
+    .footer__contact a {
+      color: var(--warm-orange);
+      font-weight: 600;
+    }
+
+    .footer__social {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      justify-content: center;
+      align-items: center;
+      padding-top: 0.75rem;
+    }
+
+    .footer__social a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.75rem;
+      padding: 0 1rem;
+      border-radius: 999px;
+      background: rgba(253, 246, 227, 0.9);
+      border: 1px solid rgba(39, 174, 96, 0.25);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease;
+    }
+
+    .footer__social a:hover {
+      background: var(--forest);
+      border-color: var(--forest);
+      color: var(--cream);
+    }
+
+    .footer__copy {
+      margin: 2rem 0 0;
+      font-size: 0.8125rem;
+      color: rgba(44, 36, 22, 0.55);
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <header>
+    <div class="site-header">
+      <p class="logo">PawTreats <span>毛爪子</span></p>
+    </div>
+    <section class="hero" aria-label="品牌形象主視覺">
+      <div class="hero__media" role="presentation"></div>
+      <div class="hero__overlay" role="presentation"></div>
+      <div class="hero__content">
+        <h1 class="hero__tagline">每一次零食，都是愛</h1>
+        <p class="hero__sub">
+          天然手工寵物零食，給把毛小孩當家人的鏟屎官 — PawTreats 毛爪子。
+        </p>
+      </div>
+    </section>
+  </header>
+
+  <main id="main-content">
+  <section class="section story" id="story" aria-labelledby="story-heading">
+    <div class="section__inner">
+      <h2 id="story-heading" class="section-title">品牌故事</h2>
+      <div class="story__panel">
+        <div class="story__bg" role="presentation"></div>
+        <div class="story__scrim" role="presentation"></div>
+        <div class="story__text">
+          <h3>從廚房裡長出的安心</h3>
+          <p>
+            毛爪子相信，真正的好零食應該像家裡端出的一盤點心 — 看得懂原料、聞得到香氣、 
+            毛孩吃得開心，你也放得下心。我們堅持選用天然食材，少加工、少添加，以手工小批次製作， 
+            保留食材原本的滋味與營養。
+          </p>
+          <p>
+            每一包零食，都承載著「把毛孩當家人」的心意。願每一次獎勵與分享， 
+            都是你和毛孩之間，最溫柔的日常儀式。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section products" id="products" aria-labelledby="products-heading">
+    <div class="section__inner">
+      <h2 id="products-heading" class="section-title">人氣精選</h2>
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="product-card__img-wrap">
+            <div class="product-card__corner">
+              <span class="product-card__badge product-card__badge--dehydrate">低溫烘乾</span>
+            </div>
+            <img src="product-pack.png" alt="乾燥雞肉條包裝示意" width="800" height="600" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3>乾燥雞肉條</h3>
+            <p>純肉慢烘，薄脆好咬，訓練獎勵與日常點心都適合。</p>
+            <a class="product-card__cta" href="#contact">立即訂購</a>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-card__img-wrap">
+            <div class="product-card__corner">
+              <span class="product-card__badge product-card__badge--training">訓練獎勵</span>
+            </div>
+            <img src="product-pack.png" alt="牛肉小方包裝示意" width="800" height="600" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3>牛肉小方</h3>
+            <p>香氣濃郁、一口大小，讓挑嘴毛孩也難以抗拒。</p>
+            <a class="product-card__cta" href="#contact">立即訂購</a>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-card__img-wrap">
+            <div class="product-card__corner">
+              <svg class="product-card__celebration" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false">
+                <path fill="#ff9f43" d="M16 5c-1.8 3.5-3.8 5.8-3.8 9.2 0 2.6 1.7 4.5 3.8 5.6 2.1-1.1 3.8-3 3.8-5.6 0-3.4-2-5.7-3.8-9.2z"/>
+                <path fill="#ffb347" d="M16 7.5c-1.2 2.2-2.4 3.8-2.4 6.2 0 1.7 1 3 2.4 3.8 1.4-.8 2.4-2.1 2.4-3.8 0-2.4-1.2-4-2.4-6.2z"/>
+                <rect x="11.5" y="15" width="9" height="14" rx="1.5" fill="#fef5e7"/>
+                <rect x="11.5" y="15" width="9" height="3" rx="1.5" fill="#f4d03f"/>
+                <line x1="11.5" y1="21" x2="20.5" y2="21" stroke="#e8dcc4" stroke-width="0.75"/>
+                <line x1="11.5" y1="24" x2="20.5" y2="24" stroke="#e8dcc4" stroke-width="0.75"/>
+              </svg>
+              <span class="product-card__badge product-card__badge--celebration">慶生款</span>
+            </div>
+            <img src="product-pack.png" alt="寵物生日蛋糕包裝示意" width="800" height="600" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3>寵物生日蛋糕</h3>
+            <p>特別日子專屬，天然配方慶祝每一歲的陪伴。</p>
+            <a class="product-card__cta" href="#contact">立即訂購</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact" aria-labelledby="contact-heading">
+    <div class="section__inner">
+      <h2 id="contact-heading" class="section-title">聯絡我們</h2>
+      <div class="contact__grid">
+        <div class="contact__card">
+          <h3>地址</h3>
+          <p>新北市板橋區文化路一段 188 巷 7 弄 3 號 1 樓<br>（捷運板橋站步行約 8 分鐘）</p>
+        </div>
+        <div class="contact__card">
+          <h3>電話</h3>
+          <p>
+            <a href="tel:+886223456789">02-2345-6789</a><br>
+            服務時間：週一至週五 10:00–18:00
+          </p>
+        </div>
+        <div class="contact__card">
+          <h3>LINE 官方帳號</h3>
+          <p>
+            ID：<strong>@pawtreats</strong><br>
+            <a href="https://line.me/ti/p/@pawtreats" rel="noopener noreferrer" target="_blank">點此加入好友，線上訂購最方便</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer__inner">
+      <p class="footer__brand">PawTreats 毛爪子</p>
+      <p class="footer__tagline">每一次零食，都是愛</p>
+      <ul class="footer__nav" aria-label="頁尾導覽">
+        <li><a href="#story">品牌故事</a></li>
+        <li><a href="#products">人氣精選</a></li>
+        <li><a href="#contact">聯絡我們</a></li>
+      </ul>
+      <p class="footer__meta">
+        手工小批次製作，出貨時間依訂單量略有調整，急件歡迎先以電話或 LINE 聯繫確認。<br>
+        產品圖片為示意，實際包裝以出貨為準。
+      </p>
+      <p class="footer__contact">
+        訂購與合作洽詢：<a href="mailto:hello@pawtreats.tw">hello@pawtreats.tw</a><br>
+        客服專線：<a href="tel:+886223456789">02-2345-6789</a> ·
+        <a href="https://line.me/ti/p/@pawtreats" rel="noopener noreferrer" target="_blank">LINE @pawtreats</a><br>
+        服務時間：週一至週五 10:00–18:00
+      </p>
+      <nav class="footer__social" aria-label="社群媒體">
+        <a href="https://www.instagram.com/" rel="noopener noreferrer" target="_blank">Instagram</a>
+        <a href="https://www.facebook.com/" rel="noopener noreferrer" target="_blank">Facebook</a>
+        <a href="https://line.me/ti/p/@pawtreats" rel="noopener noreferrer" target="_blank">LINE 官方帳號</a>
+      </nav>
+      <p class="footer__copy">© PawTreats 毛爪子 · 天然手工寵物零食 · 版權所有</p>
+    </div>
+  </footer>
+</body>
+</html>
