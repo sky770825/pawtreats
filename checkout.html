@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>結帳｜PawTreats 毛爪子</title>
+  <meta name="description" content="填寫收件與配送資料，完成 PawTreats 毛爪子訂單。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#checkout-main">跳到結帳表單</a>
+
+  <header class="page-header">
+    <p class="logo"><a href="index.html">PawTreats <span>毛爪子</span></a></p>
+    <a class="back-link" href="index.html">返回首頁</a>
+  </header>
+
+  <main id="checkout-main" class="checkout-layout">
+    <h1 class="section-title checkout-page-title">結帳</h1>
+
+    <div id="checkout-empty" class="form-card empty-hint" hidden>
+      購物車目前是空的，請先至首頁選購商品。
+      <a class="back-link confirm-error-actions" href="index.html#products">前往人氣精選</a>
+    </div>
+
+    <form id="checkout-form" novalidate>
+      <div class="form-card">
+        <h2>收件人資料</h2>
+        <div class="form-grid form-grid--2">
+          <div class="form-field">
+            <label for="cust-name">姓名 <span aria-hidden="true">*</span></label>
+            <input type="text" id="cust-name" name="name" required autocomplete="name" aria-required="true">
+          </div>
+          <div class="form-field">
+            <label for="cust-phone">手機 <span aria-hidden="true">*</span></label>
+            <input type="tel" id="cust-phone" name="phone" required inputmode="numeric" autocomplete="tel" aria-required="true">
+          </div>
+          <div class="form-field" style="grid-column: 1 / -1">
+            <label for="cust-email">Email <span aria-hidden="true">*</span></label>
+            <input type="email" id="cust-email" name="email" required autocomplete="email" aria-required="true">
+          </div>
+          <div class="form-field" style="grid-column: 1 / -1">
+            <label for="cust-address">地址 <span aria-hidden="true">*</span></label>
+            <textarea id="cust-address" name="address" required autocomplete="street-address" aria-required="true" placeholder="詳細地址（含郵遞區號）"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h2>配送方式</h2>
+        <div class="radio-group" role="radiogroup" aria-label="配送方式">
+          <label class="radio-option">
+            <input type="radio" name="shipping" value="711" checked data-fee="60">
+            <span class="radio-option__text">
+              <strong>7-11 店到店</strong>
+              <span>運費 NT$60，請於門市取貨時出示證件末三碼核對。</span>
+            </span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="shipping" value="home" data-fee="100">
+            <span class="radio-option__text">
+              <strong>宅配到府</strong>
+              <span>運費 NT$100，為您安心送達指定地址。</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h2>優惠碼</h2>
+        <div class="form-field">
+          <label for="promo-code">如有活動代碼請輸入（選填）</label>
+          <input type="text" id="promo-code" name="promo" autocomplete="off" placeholder="例如：PAW2026">
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <h2>訂單摘要</h2>
+        <ul class="summary-list" id="order-lines" aria-live="polite"></ul>
+        <div class="summary-totals">
+          <p><span>商品小計</span><span id="sum-sub">NT$0</span></p>
+          <p><span id="ship-label">運費（7-11 店到店）</span><span id="sum-ship">NT$60</span></p>
+          <p class="grand"><span>總計</span><span id="sum-total">NT$60</span></p>
+        </div>
+        <button type="submit" class="submit-order-btn" id="submit-order">確認訂單</button>
+      </div>
+    </form>
+  </main>
+
+  <footer class="site-footer site-footer--compact">
+    <p class="footer__copy footer__copy--tight">© PawTreats 毛爪子</p>
+  </footer>
+
+  <script src="products.js"></script>
+  <script src="cart.js"></script>
+  <script>
+(function () {
+  var Cart = window.PawTreatsCart;
+  var resolve = window.PawTreatsResolveProductOption;
+
+  function formatMoney(n) {
+    return "NT$" + (Math.round(n) || 0).toLocaleString("zh-Hant-TW");
+  }
+
+  function getShipping() {
+    var r = document.querySelector('input[name="shipping"]:checked');
+    if (!r) return { key: "711", fee: 60, label: "7-11 店到店" };
+    var fee = parseInt(r.getAttribute("data-fee"), 10);
+    if (r.value === "home")
+      return { key: "home", fee: fee, label: "宅配到府" };
+    return { key: "711", fee: fee, label: "7-11 店到店" };
+  }
+
+  function renderSummary() {
+    var listEl = document.getElementById("order-lines");
+    var items = Cart.getItems();
+    var sub = 0;
+    var html = "";
+    for (var i = 0; i < items.length; i++) {
+      var row = items[i];
+      var r = resolve(row.productId, row.optionId);
+      if (!r) continue;
+      var line = r.option.price * row.quantity;
+      sub += line;
+      html +=
+        "<li><span>" +
+        r.product.name +
+        " · " +
+        r.option.label +
+        " × " +
+        row.quantity +
+        "</span><span>" +
+        formatMoney(line) +
+        "</span></li>";
+    }
+    listEl.innerHTML = html || "<li><span>（無品項）</span><span>—</span></li>";
+    var ship = getShipping();
+    document.getElementById("sum-sub").textContent = formatMoney(sub);
+    document.getElementById("sum-ship").textContent = formatMoney(ship.fee);
+    document.getElementById("ship-label").textContent =
+      "運費（" + ship.label + "）";
+    document.getElementById("sum-total").textContent = formatMoney(
+      sub + ship.fee
+    );
+  }
+
+  function initEmptyState() {
+    var empty = Cart.getItems().length === 0;
+    document.getElementById("checkout-empty").hidden = !empty;
+    document.getElementById("checkout-form").hidden = empty;
+  }
+
+  document
+    .querySelectorAll('input[name="shipping"]')
+    .forEach(function (el) {
+      el.addEventListener("change", renderSummary);
+    });
+
+  document
+    .getElementById("checkout-form")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (Cart.getItems().length === 0) {
+        alert("購物車是空的，無法送出訂單。");
+        return;
+      }
+      var form = e.target;
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      var ship = getShipping();
+      var sub = Cart.getSubtotal();
+      var items = Cart.getItems().map(function (row) {
+        var r = resolve(row.productId, row.optionId);
+        if (!r) return null;
+        return {
+          productId: row.productId,
+          optionId: row.optionId,
+          quantity: row.quantity,
+          productName: r.product.name,
+          optionLabel: r.option.label,
+          unitPrice: r.option.price,
+          lineTotal: r.option.price * row.quantity,
+        };
+      }).filter(Boolean);
+      var order = {
+        orderId: String(Date.now()),
+        createdAt: Date.now(),
+        customer: {
+          name: document.getElementById("cust-name").value.trim(),
+          phone: document.getElementById("cust-phone").value.trim(),
+          email: document.getElementById("cust-email").value.trim(),
+          address: document.getElementById("cust-address").value.trim(),
+        },
+        shipping: ship,
+        promoCode: document.getElementById("promo-code").value.trim(),
+        items: items,
+        subtotal: sub,
+        shippingFee: ship.fee,
+        total: sub + ship.fee,
+      };
+      try {
+        sessionStorage.setItem(
+          "pawtreats_pending_order",
+          JSON.stringify(order)
+        );
+      } catch (err) {
+        alert("無法儲存訂單，請關閉私密瀏覽或檢查瀏覽器設定後重試。");
+        return;
+      }
+      Cart.clear();
+      window.location.href = "confirmation.html";
+    });
+
+  initEmptyState();
+  renderSummary();
+})();
+  </script>
+</body>
+</html>

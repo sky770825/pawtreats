@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>訂單成立｜PawTreats 毛爪子</title>
+  <meta name="description" content="感謝您的訂購，PawTreats 毛爪子已收到您的訂單。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#confirm-main">跳到訂單內容</a>
+
+  <header class="page-header">
+    <p class="logo"><a href="index.html">PawTreats <span>毛爪子</span></a></p>
+    <a class="back-link" href="index.html">返回首頁</a>
+  </header>
+
+  <main id="confirm-main" class="confirm-layout">
+    <div id="confirm-error" class="form-card empty-hint" hidden>
+      找不到訂單資料。若您已重新整理或關閉視窗，請回到首頁重新選購。
+      <a href="index.html" class="primary-btn confirm-error-actions">回到首頁</a>
+    </div>
+
+    <div id="confirm-ok" hidden>
+      <div class="confirm-badge" role="status" aria-live="polite">
+        <div class="confirm-badge__icon" aria-hidden="true">✓</div>
+        <h1>訂單已成立</h1>
+        <p class="confirm-order-id">
+          訂單編號：<strong id="out-order-id"></strong>
+        </p>
+      </div>
+
+      <div class="summary-card">
+        <h2>購買明細</h2>
+        <ul class="summary-list" id="out-lines"></ul>
+        <div class="summary-totals">
+          <p><span>商品小計</span><span id="out-sub"></span></p>
+          <p><span id="out-ship-label"></span><span id="out-ship"></span></p>
+          <p class="grand"><span>付款總額</span><span id="out-total"></span></p>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h2>配送資訊</h2>
+        <div class="detail-block">
+          <h3>收件人</h3>
+          <p id="out-cust"></p>
+        </div>
+        <div class="detail-block">
+          <h3>配送方式</h3>
+          <p id="out-ship-method"></p>
+        </div>
+        <div class="detail-block">
+          <h3>優惠碼</h3>
+          <p id="out-promo">—</p>
+        </div>
+      </div>
+
+      <p class="confirm-note">
+        我們會於 1–2 個工作天內依序處理訂單，若有急件請洽客服。
+      </p>
+
+      <a href="index.html" class="primary-btn">返回首頁</a>
+    </div>
+  </main>
+
+  <footer class="site-footer site-footer--compact">
+    <p class="footer__copy footer__copy--tight">© PawTreats 毛爪子</p>
+  </footer>
+
+  <script src="cart.js"></script>
+  <script>
+(function () {
+  var Cart = window.PawTreatsCart;
+
+  function formatMoney(n) {
+    return "NT$" + (Math.round(n) || 0).toLocaleString("zh-Hant-TW");
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  var raw = null;
+  try {
+    raw = sessionStorage.getItem("pawtreats_pending_order");
+  } catch (e) {
+    raw = null;
+  }
+
+  if (!raw) {
+    document.getElementById("confirm-error").hidden = false;
+    return;
+  }
+
+  var order = null;
+  try {
+    order = JSON.parse(raw);
+  } catch (e) {
+    document.getElementById("confirm-error").hidden = false;
+    return;
+  }
+
+  Cart.clear();
+
+  document.getElementById("confirm-ok").hidden = false;
+  document.getElementById("out-order-id").textContent = order.orderId || "—";
+
+  var linesEl = document.getElementById("out-lines");
+  var linesHtml = "";
+  var items = order.items || [];
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i];
+    linesHtml +=
+      "<li><span>" +
+      esc(it.productName) +
+      " · " +
+      esc(it.optionLabel) +
+      " × " +
+      esc(it.quantity) +
+      "</span><span>" +
+      formatMoney(it.lineTotal) +
+      "</span></li>";
+  }
+  linesEl.innerHTML =
+    linesHtml || "<li><span>（無品項）</span><span>—</span></li>";
+
+  document.getElementById("out-sub").textContent = formatMoney(
+    order.subtotal
+  );
+  document.getElementById("out-ship-label").textContent =
+    "運費（" + (order.shipping && order.shipping.label ? order.shipping.label : "—") + "）";
+  document.getElementById("out-ship").textContent = formatMoney(
+    order.shippingFee
+  );
+  document.getElementById("out-total").textContent = formatMoney(order.total);
+
+  var c = order.customer || {};
+  document.getElementById("out-cust").innerHTML =
+    esc(c.name) +
+    "<br>" +
+    esc(c.phone) +
+    "<br>" +
+    esc(c.email) +
+    "<br>" +
+    esc(c.address).replace(/\n/g, "<br>");
+
+  document.getElementById("out-ship-method").textContent =
+    order.shipping && order.shipping.label
+      ? order.shipping.label + "（運費 " + formatMoney(order.shippingFee) + "）"
+      : "—";
+
+  var promo = order.promoCode;
+  document.getElementById("out-promo").textContent = promo
+    ? promo
+    : "未使用";
+
+  try {
+    sessionStorage.removeItem("pawtreats_pending_order");
+  } catch (e) {}
+})();
+  </script>
+</body>
+</html>
